@@ -1,0 +1,80 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:hasRecordId" access="global" controller="RecomendControler">
+ <!-- initialize -->
+ <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+ <!-- valiables -->
+ <aura:attribute name="recommends" type="List" />
+ <aura:attribute name="sendedRecommendIds" type="List" />
+ <aura:attribute name="recordId" type="String" />
+ <aura:attribute name="content" type="String" />
+ <aura:attribute name="message" type="String" />
+ <aura:attribute name="labelName" type="String" default="チャットへ送信"  />
+ <aura:attribute name="isShowReccomends" type="Boolean" default="false" />
+ <aura:attribute name="isEditDiscription" type="Boolean" default="false" />
+ <aura:attribute name="isRaisedFlow" type="Boolean" default="false" />
+
+ <!-- API -->
+ <lightning:conversationToolkitAPI aura:id="conversationKit" />
+ <lightning:omniToolkitAPI aura:id="omniToolkit" />
+
+ <!-- events -->
+ <aura:handler event="lightning:conversationNewMessage" action="{!c.onNewMessage}" />
+ <aura:handler event="lightning:conversationAgentSend" action="{! c.onAgentSend}" />
+ <aura:handler event="lightning:omniChannelWorkFlagUpdated" action="{! c.onChannelWorkFlagUpdated }"/>
+ <!-- toast Event -->
+ <aura:registerEvent name="toastEvent" type="force:showToast"/>
+
+
+ <div class="slds-card">
+    <div class="slds-einstein-header slds-card__header">
+        <header class="slds-media slds-media_center slds-has-flexi-truncate">
+            <div class="slds-grid slds-grid_vertical-align-center slds-size_3-of-4 slds-medium-size_2-of-3">
+                <div class="slds-media__body">
+                    <h1><b>リアルタイムNBAコンポーネント</b></h1>
+                </div>
+            </div>
+            <div class="slds-einstein-header__figure slds-size_1-of-4 slds-medium-size_1-of-3"></div>
+        </header>
+    </div>
+    <div class="slds-card__body slds-card__body_inner">
+        <aura:if isTrue="{!v.isShowReccomends}">
+            <div class="slds-scrollable" style="height: 280px;">
+                <aura:iteration items="{!v.recommends}" var="recommend">
+                    <div class="nba_card"  >
+                        <div class="nba_card_container">
+                            <lightning:layout class="nba_card_section_image">
+                                <lightning:layoutItem flexibility="auto">
+                                    <div class="imageContainer">
+                                        <img class="image" src="{!recommend.baseUrl}" alt="" />
+                                    </div>
+                                </lightning:layoutItem>
+                            </lightning:layout>
+                            <lightning:layout class="nba_card_section_message">
+                                <lightning:layoutItem flexibility="auto" padding="horizontal-small">
+                                    <aura:if isTrue="{!v.isEditDiscription}">
+                                            <lightning:textarea onblur="{! c.blurHandler}" onchange="{textEditHandler}" value="{!recommend.description}"></lightning:textarea>
+                                        <aura:set attribute="else">
+                                            <p ondblclick="{! c.ondbClickHandler}">{!recommend.description}</p>
+                                        </aura:set>
+                                    </aura:if>
+                                </lightning:layoutItem>
+                            </lightning:layout>
+                            <lightning:layout class="nba_card_section_button" horizontalAlign="center">
+                                <lightning:layoutItem flexibility="auto" padding="around-small">
+                                    <c:handleConfirmCmp onconfirm="{!c.handleConfirmEvent}" labelName="{!v.labelName}"  messagetext="{!recommend.description}" targetId="{!recommend.recommendId}"   />
+                                </lightning:layoutItem>
+                            </lightning:layout>
+                        </div>
+                    </div>
+                </aura:iteration>
+            </div>
+            <aura:set attribute="else">
+                <div class="recommendNotFound">
+                    <div class="slds-text-align_center slds-text-color_weak">
+                        おすすめがありません...
+                    </div>
+                </div>
+            </aura:set>
+        </aura:if>
+    </div>
+</div>
+</aura:component>

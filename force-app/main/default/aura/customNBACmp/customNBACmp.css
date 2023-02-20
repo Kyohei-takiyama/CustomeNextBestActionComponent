@@ -1,0 +1,30 @@
+.THIS .nba_card{
+    height: 100%;
+}
+
+.THIS .nba_card_container{
+    margin-bottom: 10px;
+    padding: 5px;
+    border: solid 	#c9c9c9 1px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 15px -8px #777777;
+}
+
+.THIS .imageContainer{
+    max-height: 150px;
+    height: 100%;
+}
+
+.THIS .image{
+    border-radius: 5px;
+    height: 90%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.THIS .recommendNotFound{
+    height: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
