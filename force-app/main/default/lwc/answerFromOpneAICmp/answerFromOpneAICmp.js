@@ -8,7 +8,7 @@ export default class AnswerFromOpneAICmp extends LightningElement {
     questionsAndAnswers = {};
     @track
     questionsAndAnswersArr = [];
-    URL = 'https://xtv0rqp5pd.execute-api.ap-northeast-1.amazonaws.com/chat';
+    URL = '';
     body = JSON.stringify({
         prompt: 'JavaScriptについて教えて',
     });
