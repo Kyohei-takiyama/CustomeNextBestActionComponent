@@ -1,0 +1,53 @@
+<template>
+    <lightning-card title="kiteco" class="card">
+      <div class="slds-scrollable_y chat-container">
+        <template for:each={questionsAndAnswersArr} for:item="questionsAndAnswer">
+          <lightning-layout key={questionsAndAnswer.question}>
+            <div class="chat-question-container">
+              <lightning-layout-item size="6">
+                <section role="log" class="slds-chat">
+                  <ul class="slds-chat-list">
+                    <li class="slds-chat-listitem slds-chat-listitem_inbound">
+                      <div class="slds-chat-message">
+                        <div class="slds-chat-message__body">
+                          <div class="slds-chat-message__text slds-chat-message__text_inbound">
+                            <span>{questionsAndAnswer.question}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </section>
+              </lightning-layout-item>
+            </div>
+          </lightning-layout>
+          <lightning-layout key={questionsAndAnswer.answer}>
+            <div class="chat-answer-container" style="width: 100%">
+              <lightning-layout-item size="6">
+                <section role="log" class="slds-chat">
+                  <ul class="slds-chat-list">
+                    <li class="slds-chat-listitem slds-chat-listitem_outbound">
+                      <div class="slds-chat-message">
+                        <div class="slds-chat-message__body">
+                          <div class="slds-chat-message__text slds-chat-message__text_outbound">
+                            <span> {questionsAndAnswer.answer} </span>
+                          </div>
+                          <div class="slds-chat-message__meta" aria-label="said Amber Cann at 4:59 PM">{questionsAndAnswer.postDT}</div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </section>
+              </lightning-layout-item>
+            </div>
+          </lightning-layout>
+        </template>
+      </div>
+      <div class="input-section">
+        <input type="text" placeholder="検索中..." value={question} class="input-box" oninput={changeHandler} />
+        <button class="btn" title="送信">
+          <lightning-icon onclick={clickHandler} icon-name="utility:send" size="x-small" class="icon"></lightning-icon>
+        </button>
+      </div>
+    </lightning-card>
+  </template>

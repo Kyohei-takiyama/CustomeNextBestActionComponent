@@ -1,0 +1,46 @@
+.container {
+    margin: 15px;
+}
+
+.chat-container {
+    height: 300px;
+    border: 1px solid #c9c9c9;
+}
+
+.input-section {
+    margin: 20px 0;
+    position: relative;
+    display: flex;
+}
+
+.input-box {
+    border: none;
+    outline: none;
+    border-bottom: 1px solid #c9c9c9;
+    padding: 5px 10px;
+    width: 100%;
+}
+
+.input-box:focus {
+    border-bottom-color: #45c65a;
+    opacity: 0.8;
+}
+
+.btn {
+    position: absolute;
+    top: -1.05rem;
+    right: 0;
+    cursor: pointer;
+    padding: 0.8rem 0.9rem 0.8rem 0.8rem;
+    border-radius: 0 1.5rem 1.5rem 0;
+    border: none;
+    font-size: 1rem;
+    transition: 0.5s;
+    background: none;
+    outline: none;
+}
+
+.btn:hover {
+    transform: scale(1.2);
+    translate: 0.3s;
+}
