@@ -1,0 +1,84 @@
+<aura:component implements="force:hasRecordId,flexipage:availableForAllPageTypes" access="global" controller="RequestEscalationControler">
+    <!-- 初期化処理 -->
+    <aura:handler name="change" value="{!v.recordId}" action="{!c.onRecordIdChange}"/>
+    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+    <!-- 属性 -->
+    <aura:attribute name="notifications" type="List"/>
+    <aura:attribute name="utilityId" type="String"/>
+    <aura:attribute name="heightPX" type="Integer"/>
+    <aura:attribute name="widthPX" type="Integer"/>
+    <aura:attribute name="sldskey" type="String"/>
+    <aura:attribute name="label" type="String"/>
+    <aura:attribute name="highlighted" type="Boolean"/>
+    <aura:attribute name="isNotReqest" type="Boolean" default="true"/>
+    <aura:attribute name="enableModalMode" type="Boolean"/>
+    <aura:attribute name="pageReference" type="Object"/>
+    <aura:attribute name="url" type="String"/>
+    <aura:attribute name="requestRecId" type="String"/>
+    <aura:attribute name="requestedObjectApiName" type="String"/>
+    <aura:attribute name="mydata" type="Object"/>
+    <aura:attribute name="isShowBtn" type="Boolean" default="true"/>
+    <!-- UtilityAPI -->
+    <lightning:utilityBarAPI aura:id="utilitybar"/>
+    <!-- NavigateAPI -->
+    <lightning:navigation aura:id="navigationService" />
+    <!-- toast Event -->
+    <aura:registerEvent name="toastEvent" type="force:showToast"/>
+    <!-- Platform Event -->
+    <lightning:empApi aura:id="empApi"/>
+    <aura:attribute name="channel" type="String" default="/event/NotificateEscalation__e"/>
+    <aura:attribute name="subscription" type="Map"/>
+
+    <lightning:tabset>
+        <lightning:tab label="通知" >
+            <!-- Header -->
+            <aura:if isTrue="{!v.isNotReqest}">
+                <div class="slds-p-around_small slds-border_bottom slds-theme_shade">
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-6">
+                            <lightning:icon iconName="utility:info" size="small" ></lightning:icon>
+                        </div>
+                        <div class="slds-col slds-size_5-of-6">
+                            <span>エスカレーション要求はありません。</span>
+                        </div>
+                    </div>
+                </div>
+            </aura:if>
+            <!-- body -->
+            <div class="container">
+                <div>
+                    <lightning:buttonIcon onclick="{!c.handleActive}" iconName="utility:refresh"></lightning:buttonIcon>
+                </div>
+                <div class="slds-container_fluid slds-scrollable_y content">
+                    <aura:iteration items="{!v.notifications}" var="notification">
+                        <div class="slds-p-around_small slds-border_bottom">
+                            <div class="slds-p-horizontal_small">
+                                <lightning:layout title="アラート通知">
+                                    <lightning:layoutItem size="7">
+                                        <p class="slds-p-vertical_xxx-small">CM : {!notification.RequestAgentName}</p>
+                                        <p class="slds-p-vertical_xxx-small">優先度 : <span class="slds-text-color_error">{!notification.Primary}</span></p>
+                                        <p class="slds-p-vertical_xxx-small">チャネル : {!notification.RequestedObjectApiName}</p>
+                                        <p class="slds-p-vertical_xxx-small">状況 : {!notification.Status}</p>
+                                        <!-- <p class="slds-p-vertical_xxx-small">メッセージ : {!notification.message}</p> -->
+                                    </lightning:layoutItem>
+                                    <lightning:layoutItem size="5">
+                                        <aura:if isTrue="{!v.isShowBtn}">
+                                            <div class="slds-p-top_small slds-p-left_small">
+                                                <lightning:button label="対応する" variant="brand" name="{!notification.ChannelId}" value="{!notification.RequestedObjectApiName}" onclick="{!c.navigateRecordPage}"></lightning:button>
+                                                <!-- <lightning:buttonIcon iconName="utility:check" onclick="{!c.navigateRecordPage}" alternativeText="レコード画面へ遷移"></lightning:buttonIcon> -->
+                                            </div>
+                                        </aura:if>
+                                    </lightning:layoutItem>
+                                </lightning:layout>
+                            </div>
+                        </div>
+                    </aura:iteration>
+                </div>
+            </div>
+        </lightning:tab>
+        <lightning:tab label="チャット">
+            <!-- 扇さんのチャターが入る想定 -->
+            <c:chatterMessenger ctxId ="{!v.recordId}" />
+        </lightning:tab>
+    </lightning:tabset>
+</aura:component>

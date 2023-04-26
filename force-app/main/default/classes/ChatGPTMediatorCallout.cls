@@ -26,6 +26,7 @@ public with sharing class ChatGPTMediatorCallout {
       return oAI;
     }
 
+
     public class OpneAI {
       @AuraEnabled
       public String message;
