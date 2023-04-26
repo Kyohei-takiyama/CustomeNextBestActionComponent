@@ -8,10 +8,14 @@ export default class AnswerFromOpneAICmp extends LightningElement {
     questionsAndAnswers = {};
     @track
     questionsAndAnswersArr = [];
-    URL = '';
+    URL = endpointURL;
     body = JSON.stringify({
         prompt: 'JavaScriptについて教えて',
     });
+
+    connectedCallback(){
+        console.log("endpoint****",endpointURL)
+    }
 
     changeHandler(e) {
         this.question = e.target.value;
@@ -68,4 +72,5 @@ export default class AnswerFromOpneAICmp extends LightningElement {
             ('0' + date.getSeconds()).slice(-2)
         );
     }
+
 }
