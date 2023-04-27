@@ -1,0 +1,34 @@
+<template>
+    <lightning-card title="発信通知番号選択" icon-name="custom:custom67" class="slds-card">
+        <lightning-layout>
+            <lightning-layout-item size="12">
+                <lightning-combobox
+                name="outboundNumberList"
+                label="発信通知番号"
+                value={outboundNumber}
+                placeholder="発信通知番号を選択してください"
+                options={outboundNumbers}
+                disabled={isDisabled}
+                onchange={handleChange}>
+            </lightning-combobox>
+            </lightning-layout-item>
+        </lightning-layout>
+        <template if:true={isShowUpdateBtn}>
+            <div class="btn-container">
+                <div class="btn-group">
+                    <div class="btn-area">
+                        <lightning-button label="番号更新" onclick={handleUpdate} variant="brand"></lightning-button>
+                    </div>
+                    <div class="btn-area">
+                        <lightning-button label="キャンセル" onclick={handleCancel} variant="destructive-text"></lightning-button>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <template if:true={isProcessing}>
+            <div class="spinner">
+                <lightning-spinner alternative-text="Loading" size="xx-small"></lightning-spinner>
+            </div>
+        </template>
+    </lightning-card>
+</template>
