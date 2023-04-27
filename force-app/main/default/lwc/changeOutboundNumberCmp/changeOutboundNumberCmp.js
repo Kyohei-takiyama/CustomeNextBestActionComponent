@@ -1,9 +1,9 @@
-import { LightningElement, track } from 'lwc';
+import { LightningElement } from 'lwc';
 import Id from '@salesforce/user/Id';
 import getOutboundNumber from '@salesforce/apex/VoiceController.getOutboundNumber';
 import updateOutboundNumber from '@salesforce/apex/VoiceController.updateOutboundNumber';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import OutboundNumberList from '@salesforce/label/c.OutboundNumberList';
+import OutboundNumberListLabel from '@salesforce/label/c.OutboundNumberList';
 
 
 export default class ChangeOutboundNumberCmp extends LightningElement {
@@ -17,9 +17,10 @@ export default class ChangeOutboundNumberCmp extends LightningElement {
     isDisabled = false;
 
     async connectedCallback(){
+        // 通知先番号のリストを初期化
+        this.initializeOutboundNumberList();
         this.initOutboundNumber = await getOutboundNumber({userId: this.userId});
         this.initializeOutboundNumber();
-        console.log(OutboundNumberList,'OutboundNumberList')
     }
 
     handleChange(event) {
@@ -34,11 +35,6 @@ export default class ChangeOutboundNumberCmp extends LightningElement {
     handleCancel() {
         this.hiddenUpdateBtn();
         this.initializeOutboundNumber();
-    }
-
-    // 番号を初期値に戻す
-    initializeOutboundNumber() {
-        this.outboundNumber = this.initOutboundNumber;
     }
 
     // 番号を更新
@@ -65,6 +61,22 @@ export default class ChangeOutboundNumberCmp extends LightningElement {
         this.dispatchEvent(evt);
     }
 
+    /**
+     * @description 通知先番号のリストを初期化
+     * @variable OutboundNumberListLabelがカスタム表示ラベルで、「部署名,発信通知番号;」の形式で設定する
+     */
+    initializeOutboundNumberList(){
+        OutboundNumberListLabel.split(';').forEach(text => {
+            const [label, value] = text.split(',');
+            this.outboundNumberList.push({ label, value });
+        })
+    }
+
+    // 番号を初期値に戻す
+    initializeOutboundNumber() {
+        this.outboundNumber = this.initOutboundNumber;
+    }
+
     startProcess () {
         this.isDisabled = true;
         this.isProcessing = true;
@@ -81,14 +93,5 @@ export default class ChangeOutboundNumberCmp extends LightningElement {
 
     hiddenUpdateBtn() {
         this.isShowUpdateBtn = false;
-    }
-
-    get outboundNumbers() {
-        this.outboundNumberList = [
-            { label: '保険金担当', value: '' },
-            { label: '貸付担当', value: '' },
-            { label: '新規契約担当', value: '' },
-        ];
-        return this.outboundNumberList;
     }
 }
